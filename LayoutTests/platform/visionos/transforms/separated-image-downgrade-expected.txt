@@ -34,7 +34,7 @@
                                 (view [class: WKCompositingView]
                                   (layer bounds [x: 0 y: 0 width: 0 height: 0]))
                                 (view [class: WKCompositingView]
-                                  (layer bounds [x: 0 y: 0 width: 0 height: 0])
+                                  (layer bounds [x: 0 y: 0 width: 3000 height: 3213])
                                   (layer anchorPoint [x: 0 y: 0])
                                   (subviews
                                     (view [class: WKCompositingView]
