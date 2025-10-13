@@ -24,7 +24,7 @@
 #if ENABLE_MODEL_PROCESS
 
 import Combine
-import CoreGraphics
+@_spi(Col) import CoreGraphics
 import Foundation
 import os
 import simd
@@ -303,8 +303,23 @@ extension WKRKEntity {
         default:
             break
         }
-        
-        guard let context = CGContext.init(data: nil, width: targetWidth, height: targetHeight, bitsPerComponent: image.bitsPerComponent, bytesPerRow: 0, space: image.colorSpace ?? CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: imageBitmapInfoRawValue) else {
+
+        #if canImport(CoreGraphics, _version: 1936)
+        let colorSpace = image.colorSpace ?? .sRGBSpace
+        #else
+        let colorSpace = image.colorSpace ?? CGColorSpace(name: CGColorSpace.sRGB)!
+        #endif
+
+        let context = CGContext(
+            data: nil,
+            width: targetWidth,
+            height: targetHeight,
+            bitsPerComponent: image.bitsPerComponent,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: imageBitmapInfoRawValue
+        )
+        guard let context else {
             Logger.realityKitEntity.error("Resizing IBL image: Unable to create CGContext for image resizing")
             return nil
         }
