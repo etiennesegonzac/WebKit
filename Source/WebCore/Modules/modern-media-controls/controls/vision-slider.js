@@ -68,11 +68,16 @@ class VisionSlider extends SliderBase
     {
         super.commit();
 
-        const margin = this._recessedMargin;
         const height = this._effectiveSliderHeight;
+        const margin = this._recessedMargin;
         const fillX = margin;
-        const fillWidth = this.value * (this.width - (margin * 2) - height) + height;
         this._primaryFill.element.style.left = `${fillX}px`;
-        this._primaryFill.element.style.width = `${fillWidth}px`;
+
+        // Could be hosted in a flex context and have no width set.
+        if (this.width) {
+            const fillWidth = this.value * (this.width - (margin * 2) - height) + height;
+            this._primaryFill.element.style.width = `${fillWidth}px`;
+        } else
+            this._primaryFill.element.style.width = `calc((100% - ${height}px) * ${this.value} + ${height}px)`;
     }
 }
